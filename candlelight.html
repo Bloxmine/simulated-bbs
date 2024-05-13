@@ -41,6 +41,9 @@
             height: 200px;
             margin-bottom: 20px;
         }
+        .candle:hover {
+            background-size: 130%;
+        }
         @font-face {
             font-family: 'PPMondwest';
             src: url('PPMondwest-bold.ttf') format('truetype');
@@ -48,8 +51,12 @@
     </style>
 </head>
 <body>
+    <audio autoplay loop>
+        <source src="wisdom.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
     <div class="textbox">
-        <p id="responseParagraph">Click the candle to get a serene wisdom</p>
+        <p id="responseParagraph">Click the candle to receive serene wisdom</p>
     </div>
     <div class="candle" onclick="getPrediction()">
     </div>
