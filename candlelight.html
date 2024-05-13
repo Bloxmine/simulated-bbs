@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serene wisdom</title>
+    <style>
+        body {
+            font-family: 'PPMondwest', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100vh;
+            margin: 0;
+        }
+        .textbox {
+            width: 90%;
+            height: 50%;
+            padding: 10px;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #responseParagraph {
+            margin: 0;
+            font-size: 2em;
+            text-align: center;
+        }
+        .candle {
+            background-image: url('candle.gif');
+            background-size: 120%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        @font-face {
+            font-family: 'PPMondwest';
+            src: url('PPMondwest-bold.ttf') format('truetype');
+        }
+    </style>
+</head>
+<body>
+    <div class="textbox">
+        <p id="responseParagraph">Click the candle to get a serene wisdom</p>
+    </div>
+    <div class="candle" onclick="getPrediction()">
+    </div>
+    <script>
+        async function getPrediction() {
+          const response = await fetch('http://localhost:3000/api/predict', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([
+              { role: "system", content: "Always answer as a calm wise guru" },
+              { role: "user", content: "Please tell a random soothing short fact of life" },
+            ])
+          });
+    
+          const data = await response.json();
+          document.getElementById("responseParagraph").textContent = data.response;
+          console.log(data.stats);
+        }
+      </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LM Studio API Example</title>
+</head>
+<body>
+    <div id="output"></div>
+
+    <script>
+
+        const express = require('express');
+        const app = express();
+
+        // Enable CORS middleware
+        app.use((req, res, next) => {
+            res.header('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+            next();
+        });
+        function makeRequest() {
+            var url = 'http://localhost:1337/v1/chat/completions';
+            var data = {
+                "messages": [
+                    { "role": "system", "content": "You are a helpful coding assistant." },
+                    { "role": "user", "content": "How do I init and update a git submodule?" }
+                ],
+                "temperature": 0.7,
+                "max_tokens": -1,
+                "stream": true
+            };
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        displayResponse(response);
+                    } else {
+                        console.error('Request failed:', xhr.status);
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        }
+
+        function displayResponse(response) {
+            var outputDiv = document.getElementById('output');
+            var completions = response.choices.map(choice => choice.text.trim());
+            completions.forEach(completion => {
+                var p = document.createElement('p');
+                p.textContent = completion;
+                outputDiv.appendChild(p);
+            });
+        }
+
+        makeRequest(); // Make the request when the page loads
+    </script>
+</body>
+</html>

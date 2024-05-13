@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@lmstudio/sdk": "^0.0.12",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "node-fetch": "^3.3.2",
+    "node.js": "^0.0.1-security"
+  }
+}
