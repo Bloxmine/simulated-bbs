@@ -4,6 +4,7 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "node-fetch": "^3.3.2",
-    "node.js": "^0.0.1-security"
+    "node.js": "^0.0.1-security",
+    "talkify-tts": "^4.0.0"
   }
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBS</title>
+    <style>
+        body {
+            font-family: 'PPMondwest', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100vh;
+            margin: 0;
+        }
+        .textbox {
+            width: 90%;
+            height: 50%;
+            padding: 10px;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #responseParagraph {
+            margin: 0;
+            font-size: 2em;
+            text-align: center;
+        }
+        .candle {
+            background-image: url('candle.gif');
+            background-size: 120%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        .candle:hover {
+            background-size: 130%;
+        }
+        @font-face {
+            font-family: 'PPMondwest';
+            src: url('PPMondwest-bold.ttf') format('truetype');
+        }
+    </style>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="wisdom.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="textbox">
+        <input type="text" id="userInput" placeholder="Enter your prompt here">
+        <button onclick="getPrediction()">Submit</button>
+        <p id="responseParagraph">Click the candle to receive serene wisdom</p>
+    </div>
+    <div class="candle" onclick="getPrediction()">
+    </div>
+    <script>
+        async function getPrediction() {
+          const userInput = document.getElementById("userInput").value;
+
+          const response = await fetch('http://localhost:3000/api/predict', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([
+              { role: "system", content: "You are a BBS. You act like the BBS server and only reply in this way. Do not reply like a human would. You are to give instructions on what BBS you are and how to navigate. You come up with names and numbers." },
+              { role: "user", content: userInput },
+            ])
+          });
+    
+          const data = await response.json();
+          document.getElementById("responseParagraph").textContent = data.response;
+          console.log(data.stats);
+        }
+      </script>
+</body>
+</html>

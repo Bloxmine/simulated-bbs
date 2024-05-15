@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziswell the fortune teller</title>
+</head>
+<body>
+    <div class="background-picture"></div>
+    <div class="picture"></div>
+    <audio autoplay loop>
+        <source src="zoltar.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="textbox">
+        <p id="responseParagraph"></p>
+    </div>
+    <div class="crystal-ball" onclick="getPrediction()">
+    </div>
+    <footer>
+        &copy; 1997 Ziswell the fortune teller
+    </footer>
+    <style>
+        body {
+            font-family: 'PPMondwest', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100vh;
+            margin: 0;
+        }
+        .background-picture {
+            background-image: url('ziswell.gif');
+            background-size: 25%;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: -1;
+        }
+        .picture {
+            background-image: url('ziswell.png');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 512px;
+            height: 256px;
+            margin-bottom: 20px;
+        }
+        .textbox {
+            width: 60%;
+            height: 50%;
+            padding: 10px;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #responseParagraph {
+            margin: 0;
+            font-size: 2em;
+            text-align: center;
+        }
+        .crystal-ball {
+            background-image: url('crystal-ball.gif');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+            cursor: pointer;
+            width: 256px;
+            height: 256px;
+            margin-bottom: 20px;
+            background-color: transparent;
+        }
+        .crystal-ball:hover {
+            background-size: 81%;
+        }
+        @font-face {
+            font-family: 'PPMondwest';
+            src: url('PPMondwestBold.woff') format('woff');
+        }
+    </style>
+    <script>
+        function getPrediction() {
+            const predictions = [
+                'You will find true love',
+                'You will win the lottery',
+                'You will have a great day',
+                'You will have a terrible day',
+                'You will meet a stranger',
+                'You will find a new friend',
+                'You will have a great adventure',
+                'You will have a great misadventure',
+                'You will have a great success',
+                'You will have a great failure',
+                'You will have a great surprise',
+                'You will have a great disappointment',
+                'You will have a great discovery',
+                'You will have a great loss',
+                'You will have a great gain',
+                'You will have a great journey',
+                'You will have a great return',
+                'You will have a great beginning',
+                'You will have a great ending',
+                'You will have a great start',
+                'You will have a great finish',
+                'You will have a great birth',
+                'You will have a great death',
+                'You will have a great life',
+                'You will have a great afterlife',
+                'You will have a great dream',
+                'You will have a great nightmare',
+                'You will have a great vision',
+                'You will have a great hallucination',
+                'You will have a great prophecy',
+                'You will have a great prediction',
+                'You will have a great fortune',
+                'You will have a great misfortune',
+                'You will have a great destiny',
+                'You will have a great fate',
+                'You will have a great karma',
+                'You will have a great luck',
+                'You will have a great curse',
+                'You will have a great blessing',
+                'You will have a great miracle',
+                'You will have a great magic',
+                'You will have a great spell',
+                'You will have a great potion',
+                'You will have a great elixir',
+                'You will have a great remedy',
+                'You will have a great cure',
+                'You will have a great disease',
+                'You will have a great illness',
+                'You will have a great health',
+                'You will have a great wealth',
+                'You will have a great poverty',
+                'You will have a great power',
+                'You will have a great weakness',
+                'You will be affected by future events in the future'
+            ];
+            const randomIndex = Math.floor(Math.random() * predictions.length);
+            const prediction = predictions[randomIndex];
+            document.getElementById('responseParagraph').textContent = prediction;
+        }
+    </script>
+</body>
+</html>
