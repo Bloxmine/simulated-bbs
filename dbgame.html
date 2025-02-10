@@ -1,0 +1,132 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ziswell the fortune teller</title>
+        <script src="speakClient.js"></script>
+    </head>
+    <body>
+        <div class="background-picture"></div>
+        <div class="picture"></div>
+        <audio id="myAudio" autoplay loop>
+            <source src="dbgame/Intro.wav" type="audio/wav">
+            Your browser does not support the audio element.
+        </audio>
+        <div id="audio"></div>
+        <div class="textbox">
+            <p id="responseParagraph"></p>
+        </div>
+        <div class="crystal-ball" onclick="getPrediction()"></div>
+        <style>
+            body {
+                font-family: 'PPMondwest', sans-serif;
+                background: linear-gradient(to bottom, #000000 90%, #333333);
+                color: #ffffff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+            .background-picture {
+                background-image: url('images/db/cooper.png');
+                background-size: 25%;
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                z-index: -1;
+                opacity: 0;
+                transition: opacity 6s;
+            }
+            .picture {
+                background-image: url('images/logo.png');
+                background-size: 100%;
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 512px;
+                height: 256px;
+                position: absolute;
+                top: 20%;
+                transform: translateY(-70%);
+                filter: drop-shadow(0 0 5px #fff);
+                animation: glow 1s ease-in-out infinite alternate;
+            }
+            @keyframes glow {
+                from {
+                    filter: drop-shadow(0 0 5px #fff);
+                }
+                to {
+                    filter: drop-shadow(0 0 20px #fff);
+                }
+            }
+            .textbox {
+                width: 60%;
+                height: auto;
+                padding: 10px;
+                overflow: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+                position: relative;
+                top: 50%;
+                transform: translateY(-80%);
+            }
+            #responseParagraph {
+                margin: 0;
+                font-size: 2em;
+                text-align: center;
+            }
+            .crystal-ball {
+                background-image: url('');
+                background-size: 80%;
+                background-repeat: no-repeat;
+                background-position: center;
+                border: none;
+                cursor: pointer;
+                width: 256px;
+                height: 256px;
+                margin-bottom: 20px;
+                background-color: transparent;
+            }
+            .crystal-ball:hover {
+                background-size: 81%;
+            }
+            @font-face {
+                font-family: 'PPMondwest';
+                src: url('PPMondwestBold.woff') format('woff');
+            }
+        </style>
+        <script>
+            document.getElementById('myAudio').volume = 0.5;
+            let predictionIndex = 0;
+            function getPrediction() {
+                const predictions = [
+                    'I offer you this chance',
+                    'Will you take it?',
+                    'The future is not set.',
+                    'Use these cards to play the game',
+                    'Before it plays you...'
+                ];
+                const prediction = predictions[predictionIndex];
+                document.getElementById('responseParagraph').textContent = prediction;
+                speak(prediction, { amplitude: 100, pitch: 50, speed: 175 });
+                predictionIndex++;
+                if (predictionIndex >= predictions.length) {
+                    setTimeout(goToNextPage, 3000);
+                }
+            }
+
+            function goToNextPage() {
+                window.location.href = 'dbgame/startscreen.html';
+            }
+            window.addEventListener('load', () => {
+                document.querySelector('.background-picture').style.opacity = 1;
+            });
+        </script>
+    </body>
+    </html>
