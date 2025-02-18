@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified: The Mystery</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'PPMondwest', sans-serif;
+        background: linear-gradient(to bottom, #000000 90%, #333333);
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        /* disable scrolling */
+        overflow: hidden;
+    }
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+    a:hover {
+        color: #b7b7b7;
+    }
+    .scenarioimage {
+        background-image : url('../images/scenario.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 100vw;
+        height: 100vh;
+    }
+    .gamemaster {
+            background-image: url('../images/db/cooper.png');
+            background-size: 25%;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 6s;
+            top: -20%; /* Adjust this value to move the image higher up the page */
+        }
+    .textbox {
+        display: none;
+        width: 80%;
+        margin: 20px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 10px;
+        font-size: 1.2em;
+        text-align: center;
+    }
+    .next-button {
+        display: none;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #ffffff;
+        color: #000000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .next-button:hover {
+        background-color: #b7b7b7;
+    }
+    #textspeedslider {
+        position: absolute;
+        bottom: 20px;
+        right: 0;
+        transform: translateX(-50%);
+    }
+    .textspeedsliderLabel {
+        position: absolute;
+        bottom: 50px;
+        right: 110px;
+        transform: translateX(-50%);
+        color: #6d6d6d;
+        font-size: 1.2em;
+    }
+    @font-face {
+        font-family: 'PPMondwest';
+        src: url('../PPMondwestBold.woff') format('woff');
+    }
+</style>
+<body>
+    <div class="gamemaster"></div>
+    <div class="scenarioimage"></div>
+    <div class="textbox"></div>
+    <button class="next-button" onclick="nextDialog()">Next</button>
+    <div class="textspeedsliderLabel">Text speed</div>
+    <div id="textspeedslider">
+        <input type="range" min="1" max="100" value="1" class="slider" id="myRange" oninput="speedOfTextSlider()">
+    </div>
+</body>
+<script>
+    //make scenario image disappear after 5 seconds
+    setTimeout(() => {
+        document.querySelector('.scenarioimage').style.display = 'none';
+        document.querySelector('.textbox').style.display = 'block';
+        type();
+    }, 5000);
+    // make the background image appear after 5 seconds
+    setTimeout(() => {
+        document.querySelector('.gamemaster').style.opacity = 1;
+    }, 5000);
+    // make text appear one by one in a typewriter effect
+    const dialog = [
+        'Jouw eerste missie vergt enige... voorzorg. Er is een groep dissidenten die zich tegen de organisatie keert.',
+        'Ze noemen zich de "Vrijdenkers".',
+        'Vrijheid van educatie is waar ze voor strijden. Ze willen dat iedereen toegang heeft tot alle kennis.',
+        'Dat is natuurlijk onacceptabel. De Organisatie pleit voor een gecontroleerde verspreiding van kennis.',
+        'Jouw missie is om de Vrijdenkers te infiltreren en hun leider te ontmaskeren.',
+        '1',
+        'Een van de Vrijdenkers heeft je uitgenodigd voor een bijeenkomst. Je hebt de kans om jezelf te bewijzen.',
+        'Wat ga je doen?',
+        '2',
+    ];
+    const cards = [
+        'Empathie',
+        'Eigenbelang',
+        'Passie',
+        'Leven',
+        'Energie',
+        'Wild'
+    ];
+    const textForCards = [
+        'Speel je een kaart?',
+    ]
+
+    const textForEnding = [
+        'Je bent veel te voorzichtig. De Vrijdenkers hebben je door en je wordt gevangen genomen.',
+        'Je hebt de leider van de Vrijdenkers ontmaskerd. Goed gedaan. Je hebt de missie voltooid.',
+        'Je hebt je tegen de organisatie gekeerd. Dat is onacceptabel. Je wordt gevangen genomen.',
+        'Je kan geen keuzes maken. Je wordt gevangen genomen.'
+    ]
+    const scenarioImages = [
+        '../images/scenarios/1.gif',
+        '../images/scenarios/2.png',
+        '../images/scenarios/3.png',
+        '../images/scenarios/4.png',
+        '../images/scenarios/5.png',
+    ];
+
+    let i = 0;
+    let currentText = '';
+    let currentDialog = 0;
+    let isEnd = false;
+
+    let textSpeed = 50; // Default speed
+
+    function type() {
+        if (i < dialog[currentDialog].length && !isEnd) {
+            currentText += dialog[currentDialog].charAt(i);
+            document.querySelector('.textbox').innerHTML = currentText;
+            i++;
+            setTimeout(type, textSpeed);
+        } else if (i === dialog[currentDialog].length && !isEnd) {
+            isEnd = true;
+            document.querySelector('.next-button').style.display = 'block';
+            showCardImage(dialog[currentDialog]);
+            if (currentDialog === dialog.length - 1) {
+                setTimeout(redirectToFirstGame, 3000);
+            }
+        }
+    }
+
+    function speedOfTextSlider() {
+        textSpeed = 101 - document.getElementById('myRange').value; // Invert the slider value
+    }
+
+    function nextDialog() {
+        document.querySelector('.next-button').style.display = 'none';
+        if (currentDialog < dialog.length - 1) {
+            currentDialog++;
+            i = 0;
+            currentText = '';
+            isEnd = false;
+            document.querySelector('.textbox').innerHTML = '';
+            type();
+            if (!isNaN(dialog[currentDialog])) {
+                changeScenarioImage(dialog[currentDialog]);
+            }
+        }
+    }
+
+    function showCardImage(text) {
+        const cardImages = {
+            'Empathie': '../images/empathie.png',
+            'Eigenbelang': '../images/eigenbelang.png',
+            'Passie': '../images/passie.png',
+            'Leven': '../images/leven.png',
+            'Energie': '../images/energie.png',
+            'Wild kaarten': '../images/wild.png'
+        };
+
+        for (const [key, value] of Object.entries(cardImages)) {
+            if (text.includes(key)) {
+                document.querySelector('.scenarioimage').style.backgroundImage = `url(${value})`;
+                document.querySelector('.scenarioimage').style.display = 'block';
+                break;
+            }
+        }
+    }
+
+    function changeScenarioImage(number) {
+        const index = parseInt(number) - 1;
+        if (index >= 0 && index < scenarioImages.length) {
+            document.querySelector('.scenarioimage').style.backgroundImage = `url(${scenarioImages[index]})`;
+            document.querySelector('.scenarioimage').style.display = 'block';
+        }
+    }
+
+    function redirectToFirstGame() {
+        window.location.href = 'firstgame.html';
+    }
+</script>
+</html>

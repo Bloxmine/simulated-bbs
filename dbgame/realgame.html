@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified: The Mystery</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'PPMondwest', sans-serif;
+        background: linear-gradient(to bottom, #000000 90%, #333333);
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        /* disable scrolling */
+        overflow: hidden;
+    }
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+    a:hover {
+        color: #b7b7b7;
+    }
+    .scenarioimage {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 100vw;
+        height: 100vh;
+    }
+    .textbox {
+        display: none;
+        width: 80%;
+        margin: 20px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 10px;
+        font-size: 1.2em;
+        text-align: center;
+    }
+    .next-button {
+        display: none;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #ffffff;
+        color: #000000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .next-button:hover {
+        background-color: #b7b7b7;
+    }
+    .flashinginstructiontextLeft {
+        font-size: 2em;
+        font-weight: bold;
+        animation: flashing 3s infinite;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+    }
+    .flashinginstructiontextRight {
+        font-size: 2em;
+        font-weight: bold;
+        animation: flashing 3s infinite;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    @keyframes flashing {
+        0% {
+            color: #ffffff;
+        }
+        50% {
+            color: #000000;
+        }
+        100% {
+            color: #ffffff;
+        }
+    }
+    @font-face {
+        font-family: 'PPMondwest';
+        src: url('../PPMondwestBold.woff') format('woff');
+    }
+</style>
+<body>
+    <audio id="myAudio" autoplay loop>
+        <source src="Instructions.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="flashinginstructiontextLeft">INSTRUCTIONS</div>
+    <div class="flashinginstructiontextRight">INSTRUCTIONS</div>
+    <div id="audio"></div>
+    <div class="scenarioimage"></div>
+    <div class="textbox"></div>
+    <button class="next-button" onclick="nextDialog()">Next</button>
+</body>
+<script>
+    document.getElementById('myAudio').volume = 0.5;
+    //make scenario image disappear after 5 seconds
+    setTimeout(() => {
+        document.querySelector('.scenarioimage').style.display = 'none';
+        document.querySelector('.textbox').style.display = 'block';
+        type();
+    }, 1000);
+
+    // make text appear one by one in a typewriter effect
+    const dialog = [
+        'In dit spel draait alles om het maken van keuzes. Op basis van de keuzes die je maakt verandert het verloop van het spel.',
+        ' Aan jou is de keuze of je meewerkt met de organisatie of dat je ze juist stiekem tegenwerkt.',
+        'Dit gaat met behulp van kaarten.',
+        'Er zijn 6 soorten kaarten.',
+        'Empathie',
+        'Eigenbelang',
+        'Passie',
+        'Leven',
+        'Energie',
+        'Dan heb je ook nog Wild kaarten. Deze kaarten kunnen als elk van de bovenstaande kaarten worden ingezet.',
+        'De keuzes die je maakt bepalen het verloop van het spel. Veel plezier!'
+    ];
+    let i = 0;
+    let currentText = '';
+    let currentDialog = 0;
+    let isEnd = false;
+
+    function type() {
+        if (i < dialog[currentDialog].length && !isEnd) {
+            currentText += dialog[currentDialog].charAt(i);
+            document.querySelector('.textbox').innerHTML = currentText;
+            i++;
+            setTimeout(type, 40);
+        } else if (i === dialog[currentDialog].length && !isEnd) {
+            isEnd = true;
+            document.querySelector('.next-button').style.display = 'block';
+            showCardImage(dialog[currentDialog]);
+            if (currentDialog === dialog.length - 1) {
+                setTimeout(redirectToFirstGame, 3000);
+            }
+        }
+    }
+
+    function nextDialog() {
+        document.querySelector('.next-button').style.display = 'none';
+        if (currentDialog < dialog.length - 1) {
+            currentDialog++;
+            i = 0;
+            currentText = '';
+            isEnd = false;
+            document.querySelector('.textbox').innerHTML = '';
+            type();
+        }
+    }
+
+    function showCardImage(text) {
+        const cardImages = {
+            'Empathie': '../images/empathie.png',
+            'Eigenbelang': '../images/eigenbelang.png',
+            'Passie': '../images/passie.png',
+            'Leven': '../images/leven.png',
+            'Energie': '../images/energie.png',
+            'Wild kaarten': '../images/wild.png',
+            'De keuzes': ''
+        };
+
+        for (const [key, value] of Object.entries(cardImages)) {
+            if (text.includes(key)) {
+                document.querySelector('.scenarioimage').style.backgroundImage = `url(${value})`;
+                document.querySelector('.scenarioimage').style.display = 'block';
+                break;
+            }
+        }
+    }
+
+    function redirectToFirstGame() {
+        window.location.href = 'firstgame.html';
+    }
+</script>
+</html>
